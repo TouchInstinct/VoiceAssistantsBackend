@@ -29,23 +29,22 @@ const pizzas = [
 const pizzaInfo = {
 
     getPizzaInfoByPizzaName: function (pizza) {
-        if (pizza === undefined) {
-            return "В ассортимент пиццерии \"ДоРеМи\" входят пиццы " + pizzas.map((pizza) => "\"" + pizza.name + "\"").reduce((prev, next) => prev + ", " + next) + ". Могу рассказать состав каждой пиццерии."
-        } else {
-            return "В пиццу \"" + pizza.name + "\" входят " + pizza.ingredients.map((pizza) => pizza.toLowerCase()).reduce((prev, next) => prev + ", " + next) + "."
+        const wrapName = name => `"${name}"`
+
+        if (!pizza) {
+            const pizzaNames = pizzas.map(pizza => wrapName(pizza.name)).join(", ")
+            return `В ассортимент пиццерии "ДоРеМи" входят пиццы ${pizzaNames}. Могу рассказать состав каждой пиццерии.`
         }
+
+        const ingredients = pizza.ingredients.map(ingredient => ingredient.toLowerCase()).join(", ")
+        return `В пиццу ${wrapName(pizza.name)} входят ${ingredients}.`
     },
 
     getPizzaInfoByUserCommand: function (command) {
         command = command.toLowerCase();
-        const pizza = pizzas.find((pizza) => {
-                let contains = false;
-                pizza.base_name.forEach((base) => {
-                    contains = contains || command.indexOf(base) !== -1
-                });
-                return contains
-            }
-        );
+        const pizza = pizzas.find(pizza => (
+            pizza.base_name.some(base => (command.indexOf(base) !== -1))
+        ))
 
         return this.getPizzaInfoByPizzaName(pizza)
     },
