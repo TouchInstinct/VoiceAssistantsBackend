@@ -1,12 +1,12 @@
 const express = require('express');
-const ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
+const Assistant = require('actions-on-google').DialogflowApp;
 const pizzaInfo = require('../pizza/pizza_info.js');
 const app = express.Router();
 
 // запрос на обработку вебхуков
 app.use('/', function (req, res, next) {
     // Инициализируем API.AI assistant объект.
-    const assistant = new ApiAiAssistant({request: req, response: res});
+    const assistant = new Assistant({request: req, response: res});
 
     const ASK_INGREDIENTS_ACTION = 'listOfIngredients';  // Название интента
     const PIZZA_PARAMETER = 'pizza'; // Название сцщности
